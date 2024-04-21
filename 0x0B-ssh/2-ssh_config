@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# This is the system-wide SSH client configuration file.
+# It provides default settings for users, which can be overridden
+
+Host *
+	PasswordAuthentication no
+	IdentityFile ~/.ssh/school
+	SendEnv LANG LC_*
+	HashKnownHosts yes
+	GSSAPIAuthentication yes
+	GSSAPIDelegateCredentials no
