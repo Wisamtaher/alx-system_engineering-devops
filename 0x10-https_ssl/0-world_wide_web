@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Instructions: Run this script with a domain and optionally a subdomain.
+# Purpose: Obtain and present details about subdomains.
+# Function: Retrieves and displays information about a subdomain.
+
+domain_information() {
+    # Retrieves DNS data for the specified subdomain under the given domain
+    line=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tr '\t' '\n' | tail -2 | tr '\n' ' ')
+    # Extracts pertinent information and outputs it
+    echo "$2 $line" | awk '{print "The subdomain " $1 " is a " $2 " record and points to " $3}'
+}
+
+# Checks the number of arguments provided to the script
+if [ "$#" -eq 1 ]
+then
+    # If there's only one argument,
+    # invokes the domain_information function with preset subdomain names
+    domain_information "$1" "www"
+    domain_information "$1" "lb-01"
+    domain_information "$1" "web-01"
+    domain_information "$1" "web-02"
+elif [ "$#" -eq 2 ]
+then
+    # If there are two arguments, invokes the domain_information function with the given subdomain name
+    domain_information "$1" "$2"
+fi

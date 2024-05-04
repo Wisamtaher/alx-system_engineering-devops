@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Script for HAproxy SSL termination
+
+frontend www-http
+    bind *:80
+    redirect scheme https code 301 if !{ ssl_fc }
+
+frontend www-https
+    bind *:443 ssl crt /etc/ssl/holberton.pem
+    reqadd X-Forwarded-Proto:\ https
+    default_backend holberton_servers
+
+backend holberton_servers
+    balance roundrobin
+    server web1 54.90.45.16:80 check
+    server web2 100.26.222.243:80 check
