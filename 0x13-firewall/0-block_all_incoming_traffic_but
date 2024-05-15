@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# This script sets up a ufw firewall to block all incoming traffic,
+# except for TCP ports 22, 80, and 443.
+
+# Install ufw if not already installed
+sudo apt install ufw
+
+# Set default rules to deny incoming traffic and allow outgoing traffic
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+
+# Allow specific TCP ports
+sudo ufw allow 22/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 80/tcp
+
+# Enable ufw
+sudo ufw enable
+
+# Display firewall status with verbose information
+sudo ufw status verbose
