@@ -1,30 +1,37 @@
 #!/usr/bin/python3
-"""For a given employee ID, returns information about
-their TODO list progress"""
-
+""" This script gathers data from a REST API for a given employee ID and
+returns information about their TODO list progress. """
 import requests
 import sys
 
+
 if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: {} <employee_id>".format(sys.argv[0]))
+        sys.exit(1)
 
-    userId = sys.argv[1]
-    user = requests.get("https://jsonplaceholder.typicode.com/users/{}"
-                        .format(userId))
+    employee_id = sys.argv[1]
 
-    name = user.json().get('name')
+    try:
+        employee_id = int(employee_id)
+    except ValueError:
+        print("Employee ID must be an integer")
+        sys.exit(1)
 
-    todos = requests.get('https://jsonplaceholder.typicode.com/todos')
-    totalTasks = 0
-    completed = 0
+    user_url = ("https://jsonplaceholder.typicode.com/users/{}"
+                .format(employee_id))
+    user_response = requests.get(user_url).json()
+    employee_name = user_response.get("name")
 
-    for task in todos.json():
-        if task.get('userId') == int(userId):
-            totalTasks += 1
-            if task.get('completed'):
-                completed += 1
+    todos_url = ("https://jsonplaceholder.typicode.com/todos?userId={}"
+                 .format(employee_id))
+    todos_response = requests.get(todos_url).json()
 
-    print('Employee {} is done with tasks({}/{}):'
-          .format(name, completed, totalTasks))
+    total_tasks = len(todos_response)
+    done_tasks = [task for task in todos_response if task.get("completed")]
+    number_of_done_tasks = len(done_tasks)
 
-    print('\n'.join(["\t " + task.get('title') for task in todos.json()
-          if task.get('userId') == int(userId) and task.get('completed')]))
+    print("Employee {} is done with tasks({}/{}):"
+          .format(employee_name, number_of_done_tasks, total_tasks))
+    for task in done_tasks:
+        print("\t {}".format(task.get("title")))
