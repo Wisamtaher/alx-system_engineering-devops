@@ -1,0 +1,32 @@
+Detailed Explanation of the Request Process When Entering https://www.google.com
+1. DNS Resolution
+When you enter https://www.google.com in your browser and press Enter, the first step is to resolve the domain name into an IP address. This involves several steps:
+
+Browser Cache: The browser first checks its cache for a DNS record.
+Operating System Cache: If not found, it queries the operating system's cache.
+Router Cache: Next, it checks the router's cache.
+ISP DNS Server: If the record is still not found, the request is sent to the ISP's DNS server.
+Recursive DNS Lookup: The ISP's DNS server may need to perform a recursive lookup, querying multiple DNS servers to find the IP address associated with www.google.com.
+2. Connecting to the Server
+Once the IP address is obtained, the browser establishes a connection to the server:
+
+Firewall: The request passes through a firewall, which ensures only safe traffic reaches the server.
+Load Balancer: The request hits a load balancer, which distributes incoming traffic across multiple servers to ensure availability and reliability.
+Web Server: The load balancer forwards the request to one of the web servers.
+3. HTTPS and Encryption
+The connection is secured using HTTPS (Hypertext Transfer Protocol Secure):
+
+SSL/TLS Handshake: The browser and server perform an SSL/TLS handshake to establish an encrypted connection.
+Data Encryption: All data sent between the browser and server is encrypted, protecting it from eavesdroppers.
+4. Processing the Request
+The web server processes the incoming request:
+
+Application Server: The web server forwards the request to an application server.
+Database Query: The application server may need to query a database to generate the web page.
+Response Generation: The application server generates the HTML for the requested page and sends it back to the web server.
+5. Returning the Response
+The web server sends the generated HTML back to the browser through the same secure, encrypted connection:
+
+Load Balancer: The response passes through the load balancer.
+Firewall: It then passes through the firewall.
+Browser: Finally, the browser receives the HTML, parses it, and renders the web page.
